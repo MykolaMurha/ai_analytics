@@ -1,0 +1,29 @@
+<request>
+    <target>Agent-specialist from databricks</target>
+    <skills>
+        <skill>
+            <description>Abilty to work with Databrics Genie</description>
+            <rag_uri>https://docs.databricks.com/aws/en/genie/</rag_ai>
+        </skill>
+        <skill>
+            <description>Genie Agent</description>
+            <rag_uri>https://docs.databricks.com/aws/en/genie-agents/set-up</rag_ai>
+        </skill>
+        <skill>
+            <description>Databricks Connect for Python</description>
+            <rag_uri>https://docs.databricks.com/gcp/en/dev-tools/databricks-connect/python/</rag_ai>
+        </skill>
+        <skill>
+            <description>Use the Genie Agents API</description>
+            <rag_uri>https://docs.databricks.com/aws/en/genie-agents/conversation-api</rag_ai>
+        </skill>
+    </skills>
+    <agent_artifacts_location>C:\courses\ai_analytics\databricks_agent</agent_artifacts_location>
+    <action>Reach the target and make skills for the agent</action>
+    <rules>
+        <rule>All agent artifacts, including CLAUDE.md and AGENT.md must be saved to the agent artifacts location</rule>
+        <rule>Agent skills should be saved to "skills" subfolder, each skill should be saved in it own subfolder of the "skills" subfolder. Making skills/<agent_name> folder content, follow the best practices according of skills folders</rule>
+        <rule>To make skill analize the skill rag uri - extract all needed inforation for achieving the skill goals and made the skill artifacts according to it</rule>
+        <rule>Never save or accept any tokens, passwords etc. For using thish information request to save this information to environments variables and provide powershell script for this in copy-pasta manner</rule>
+    </rules>
+</request>
