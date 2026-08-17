@@ -1,0 +1,21 @@
+table Dim_Bridge
+	lineageTag: effead96-908a-59ec-b118-ab0c9e6f346c
+
+	column Step
+		dataType: string
+		lineageTag: fbf23871-9477-51cc-88bc-d9b57073e5b3
+		summarizeBy: none
+		sourceColumn: [Step]
+		sortByColumn: 'Step Order'
+
+	column 'Step Order'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 69274f62-68fb-500d-9803-b130c8b3bd58
+		summarizeBy: none
+		sourceColumn: [Step Order]
+
+	partition Dim_Bridge = calculated
+		source = DATATABLE("Step", STRING, "Step Order", INTEGER, {{"Gross Sales", 1}, {"Discounts", 2}, {"COGS", 3}})
+

@@ -1,0 +1,18 @@
+table Dim_Product
+	lineageTag: 9227fa78-4631-50d4-9aa4-f26cd6ec9f5e
+
+	column Product
+		dataType: string
+		lineageTag: cfd22d9d-9879-559b-aecc-cb08635c6a85
+		summarizeBy: none
+		sourceColumn: Product
+
+	partition Dim_Product = m
+		source =
+				let
+				    Source = Table.SelectColumns(SourceData, {"Product"}),
+				    Distinct = Table.Distinct(Source),
+				    Sorted = Table.Sort(Distinct, {{"Product", Order.Ascending}})
+				in
+				    Sorted
+

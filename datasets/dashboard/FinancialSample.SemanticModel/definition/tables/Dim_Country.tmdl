@@ -1,0 +1,19 @@
+table Dim_Country
+	lineageTag: 5e9feb34-2c67-50f9-928f-53acc19a46cb
+
+	column Country
+		dataType: string
+		lineageTag: 17c843a1-f824-5d2a-b494-d1acc915d979
+		dataCategory: Country
+		summarizeBy: none
+		sourceColumn: Country
+
+	partition Dim_Country = m
+		source =
+				let
+				    Source = Table.SelectColumns(SourceData, {"Country"}),
+				    Distinct = Table.Distinct(Source),
+				    Sorted = Table.Sort(Distinct, {{"Country", Order.Ascending}})
+				in
+				    Sorted
+

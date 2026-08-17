@@ -1,0 +1,18 @@
+table Dim_Segment
+	lineageTag: 19c14d6c-d9a6-5c2f-9a4e-c054510c5aff
+
+	column Segment
+		dataType: string
+		lineageTag: 5a061040-c36c-5477-8dd3-9df576476412
+		summarizeBy: none
+		sourceColumn: Segment
+
+	partition Dim_Segment = m
+		source =
+				let
+				    Source = Table.SelectColumns(SourceData, {"Segment"}),
+				    Distinct = Table.Distinct(Source),
+				    Sorted = Table.Sort(Distinct, {{"Segment", Order.Ascending}})
+				in
+				    Sorted
+

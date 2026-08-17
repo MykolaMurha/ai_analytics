@@ -1,0 +1,20 @@
+relationship 7bb5f073-aad8-5301-90c0-ac2387b4a4e7
+	fromColumn: Financials.Date
+	toColumn: Dim_Date.Date
+
+relationship eb3da15d-b374-5217-8290-2cf1cfbf8432
+	fromColumn: Financials.Segment
+	toColumn: Dim_Segment.Segment
+
+relationship 2d5dfb00-cd59-517c-9169-891c6c9dd5d8
+	fromColumn: Financials.Country
+	toColumn: Dim_Country.Country
+
+relationship 60c7c337-9b37-5d6e-9a9f-9d60fe2d87d7
+	fromColumn: Financials.Product
+	toColumn: Dim_Product.Product
+
+relationship 27ae6446-9756-5958-a52a-c66eabb13c6e
+	fromColumn: Financials.'Discount Band'
+	toColumn: Dim_DiscountBand.'Discount Band'
+

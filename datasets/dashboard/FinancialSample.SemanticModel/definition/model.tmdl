@@ -1,0 +1,24 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 0
+
+annotation PBI_ProTooling = ["DevMode"]
+
+annotation PBI_QueryOrder = ["CsvPath","SourceData","Financials","Dim_Segment","Dim_Country","Dim_Product","Dim_DiscountBand"]
+
+ref table Financials
+ref table Dim_Date
+ref table Dim_Segment
+ref table Dim_Country
+ref table Dim_Product
+ref table Dim_DiscountBand
+ref table Dim_Bridge
+
+ref cultureInfo en-US
+

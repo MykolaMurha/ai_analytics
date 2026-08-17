@@ -1,0 +1,59 @@
+table Dim_Date
+	lineageTag: ce60058f-9c81-5d1a-942c-a7871187cc14
+	dataCategory: Time
+
+	column Date
+		dataType: dateTime
+		isKey
+		formatString: Long Date
+		lineageTag: bb659c49-02f5-5793-a4ad-8e3e9cc35301
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Date]
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: c4a337f9-4a46-5678-9a34-129417fe288a
+		summarizeBy: none
+		sourceColumn: [Year]
+
+	column 'Month Number'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 58a68e4b-d182-51c0-b478-88c38b9799ab
+		summarizeBy: none
+		sourceColumn: [Month Number]
+
+	column 'Month Name'
+		dataType: string
+		lineageTag: 8a489ef8-006d-5e90-86e0-a01571671f27
+		summarizeBy: none
+		sourceColumn: [Month Name]
+		sortByColumn: 'Month Number'
+
+	column 'Month Year'
+		dataType: string
+		lineageTag: ec39dbbb-444e-521e-8195-df19296e8193
+		summarizeBy: none
+		sourceColumn: [Month Year]
+		sortByColumn: 'Month Year Index'
+
+	column 'Month Year Index'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: dacc94c5-f304-5b06-b230-38b876bccc9a
+		summarizeBy: none
+		sourceColumn: [Month Year Index]
+
+	column Quarter
+		dataType: string
+		lineageTag: 1792f249-c08b-562c-b6de-b300f9df4775
+		summarizeBy: none
+		sourceColumn: [Quarter]
+
+	partition Dim_Date = calculated
+		source = ADDCOLUMNS(CALENDAR(DATE(2013, 9, 1), DATE(2014, 12, 31)), "Year", YEAR([Date]), "Month Number", MONTH([Date]), "Month Name", FORMAT([Date], "mmmm"), "Month Year", FORMAT([Date], "mmm yyyy"), "Month Year Index", YEAR([Date]) * 100 + MONTH([Date]), "Quarter", "Q" & QUARTER([Date]))
+

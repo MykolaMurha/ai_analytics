@@ -1,0 +1,31 @@
+expression CsvPath = "C:\courses\ai_analytics\datasets\Financial Sample.csv" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 604c6cc7-8bb4-56fa-8d31-c14d49706b02
+
+	annotation PBI_ResultType = Text
+
+expression SourceData =
+		let
+		    Source = Csv.Document(File.Contents(CsvPath), [Delimiter = ",", Columns = 16, Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+		    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+		    TrimmedHeaders = Table.TransformColumnNames(Promoted, Text.Trim),
+		    TrimmedText = Table.TransformColumns(
+		        TrimmedHeaders,
+		        List.Transform({"Segment", "Country", "Product", "Discount Band"}, (c) => {c, Text.Trim, type text})
+		    ),
+		    ParsedMoney = Table.TransformColumns(
+		        TrimmedText,
+		        List.Transform(
+		            {"Manufacturing Price", "Sale Price", "Gross Sales", "Discounts", "Sales", "COGS", "Profit"},
+		            (c) => {c, (v) => let t = Text.Remove(Text.From(v), {"$", ",", " "}) in if t = null or t = "" or t = "-" then 0 else Number.FromText(t, "en-US"), type number}
+		        )
+		    ),
+		    ParsedUnits = Table.TransformColumns(ParsedMoney, {{"Units Sold", (v) => Number.FromText(Text.From(v), "en-US"), type number}}),
+		    TypedDate = Table.TransformColumnTypes(ParsedUnits, {{"Date", type date}}, "en-US"),
+		    RemovedRedundant = Table.RemoveColumns(TypedDate, {"Year", "Month Number", "Month Name"}),
+		    Result = Table.SelectRows(RemovedRedundant, each [Date] <> null)
+		in
+		    Result
+	lineageTag: 4738169b-21e8-59c3-ba47-3f2441dd8787
+
+	annotation PBI_ResultType = Table
+

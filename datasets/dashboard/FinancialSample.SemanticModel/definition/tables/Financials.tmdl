@@ -1,0 +1,171 @@
+table Financials
+	lineageTag: 6b6e3214-e885-5d76-9b7b-ef77597db98d
+
+	measure 'Net Sales' = SUM(Financials[Sales])
+		formatString: \$#,0
+		lineageTag: 9b75dbea-652d-51db-817b-756bf6e8b771
+
+	measure 'Total Gross Sales' = SUM(Financials[Gross Sales])
+		formatString: \$#,0
+		lineageTag: b350f92e-2d44-5e9b-b213-c808de238c30
+
+	measure 'Total Discounts' = SUM(Financials[Discounts])
+		formatString: \$#,0
+		lineageTag: 5fde4dce-53af-52ce-8898-661bacf23729
+
+	measure 'Total COGS' = SUM(Financials[COGS])
+		formatString: \$#,0
+		lineageTag: d81466cb-31c4-5a7d-b92c-3e1fdc02dbaf
+
+	measure 'Total Profit' = SUM(Financials[Profit])
+		formatString: \$#,0
+		lineageTag: 2e13b582-ef98-5caa-88a6-d3c78d4af587
+
+	measure 'Total Units' = SUM(Financials[Units Sold])
+		formatString: #,0
+		lineageTag: 788e514d-1bc5-53c0-ad5c-9baa6522ca3c
+
+	measure Transactions = COUNTROWS(Financials)
+		formatString: #,0
+		lineageTag: 1ee70b90-89ba-5ada-990b-a6b5a761fd84
+
+	measure 'Profit Margin %' = DIVIDE([Total Profit], [Net Sales])
+		formatString: 0.0%
+		lineageTag: a022c7dc-6b61-59d8-8761-4d3d85fdb854
+
+	measure 'Discount Rate %' = DIVIDE([Total Discounts], [Total Gross Sales])
+		formatString: 0.0%
+		lineageTag: 682823c1-1ecf-5867-903f-dc9b191ce81b
+
+	measure 'COGS Ratio %' = DIVIDE([Total COGS], [Net Sales])
+		formatString: 0.0%
+		lineageTag: cfc4dd26-af0d-57ba-a89f-e1bcd88a2880
+
+	measure 'Profit per Unit' = DIVIDE([Total Profit], [Total Units])
+		formatString: \$#,0.00
+		lineageTag: e57b1d05-b44e-5914-a003-a573ebe553be
+
+	measure 'Avg Transaction Size' = DIVIDE([Net Sales], [Transactions])
+		formatString: \$#,0
+		lineageTag: 99b0a415-8c94-55b6-85f2-62d7ca2dfca5
+
+	measure 'Loss Making Txns' = CALCULATE([Transactions], Financials[Profit] < 0)
+		formatString: #,0
+		lineageTag: 6e32b344-4d22-5cac-a2b8-0b78bda04743
+
+	measure 'Loss Amount' = CALCULATE([Total Profit], Financials[Profit] < 0)
+		formatString: \$#,0
+		lineageTag: d15c41ef-d5a0-5aa1-ba83-4888f31077fc
+
+	measure 'Sales MoM %' = DIVIDE([Net Sales] - CALCULATE([Net Sales], DATEADD(Dim_Date[Date], -1, MONTH)), CALCULATE([Net Sales], DATEADD(Dim_Date[Date], -1, MONTH)))
+		formatString: 0.0%
+		lineageTag: ea0873c5-9c0a-5a1b-a63f-37f58559c605
+
+	measure 'Sales Rolling 3M' = CALCULATE([Net Sales], DATESINPERIOD(Dim_Date[Date], MAX(Dim_Date[Date]), -3, MONTH))
+		formatString: \$#,0
+		lineageTag: a7688993-e9ce-5b7f-bef9-379df48ed5b1
+
+	measure 'Profit Share %' = DIVIDE([Total Profit], CALCULATE([Total Profit], ALLSELECTED()))
+		formatString: 0.0%
+		lineageTag: 1efbc214-deb7-51ae-ba73-beac09da6b6d
+
+	measure 'Sales Share %' = DIVIDE([Net Sales], CALCULATE([Net Sales], ALLSELECTED()))
+		formatString: 0.0%
+		lineageTag: b8a0a447-155b-5cdb-9a53-d12d8666faa7
+
+	measure 'Bridge Value' = SWITCH(SELECTEDVALUE(Dim_Bridge[Step]), "Gross Sales", [Total Gross Sales], "Discounts", -[Total Discounts], "COGS", -[Total COGS], BLANK())
+		formatString: \$#,0
+		lineageTag: f1e7a3f5-2c29-5ab7-90c7-a19dedbf26a6
+
+	column Segment
+		dataType: string
+		lineageTag: 7d771044-bd04-5e36-8b88-ef4b0f90f392
+		summarizeBy: none
+		sourceColumn: Segment
+
+	column Country
+		dataType: string
+		lineageTag: 13ecadd4-26ec-51a7-86da-4b4cbaaec80d
+		summarizeBy: none
+		sourceColumn: Country
+
+	column Product
+		dataType: string
+		lineageTag: 5e658ecd-f83d-590d-a918-07eb89c8d5d7
+		summarizeBy: none
+		sourceColumn: Product
+
+	column 'Discount Band'
+		dataType: string
+		lineageTag: 06597b5b-744f-52db-bf45-e99a0199b1c6
+		summarizeBy: none
+		sourceColumn: Discount Band
+
+	column 'Units Sold'
+		dataType: double
+		formatString: #,0
+		lineageTag: 61b3b450-09f6-5a6b-8388-d3158203900f
+		summarizeBy: none
+		sourceColumn: Units Sold
+
+	column 'Manufacturing Price'
+		dataType: double
+		formatString: \$#,0.00
+		lineageTag: a895ccb1-7758-57e8-8c55-792924ced5d3
+		summarizeBy: none
+		sourceColumn: Manufacturing Price
+
+	column 'Sale Price'
+		dataType: double
+		formatString: \$#,0.00
+		lineageTag: 5c754eac-a6dd-52d4-b797-db44838f1208
+		summarizeBy: none
+		sourceColumn: Sale Price
+
+	column 'Gross Sales'
+		dataType: double
+		formatString: \$#,0
+		lineageTag: 8fa14bd7-fee0-5e49-b9f4-07cf95fdd02f
+		summarizeBy: none
+		sourceColumn: Gross Sales
+
+	column Discounts
+		dataType: double
+		formatString: \$#,0
+		lineageTag: d8134677-9f48-5651-8f99-b9c147f4067b
+		summarizeBy: none
+		sourceColumn: Discounts
+
+	column Sales
+		dataType: double
+		formatString: \$#,0
+		lineageTag: cac9bc7f-ec17-5306-9632-d3b8a3eaa3cc
+		summarizeBy: none
+		sourceColumn: Sales
+
+	column COGS
+		dataType: double
+		formatString: \$#,0
+		lineageTag: 32185cf7-5e3a-55b4-9639-f09801865722
+		summarizeBy: none
+		sourceColumn: COGS
+
+	column Profit
+		dataType: double
+		formatString: \$#,0
+		lineageTag: 1cb9cfa6-a8d5-5f8b-b7fa-303a6919d4df
+		summarizeBy: none
+		sourceColumn: Profit
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 73f39e5e-35c7-5d9b-ad87-a37a818ac1ef
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition Financials = m
+		source = SourceData
+

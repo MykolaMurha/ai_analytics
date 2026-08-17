@@ -1,0 +1,27 @@
+table Dim_DiscountBand
+	lineageTag: cdadfff1-3656-50dd-b376-10de1addad70
+
+	column 'Discount Band'
+		dataType: string
+		lineageTag: f30d0ec6-f2c0-55de-9642-81ac039642d9
+		summarizeBy: none
+		sourceColumn: Discount Band
+		sortByColumn: 'Band Order'
+
+	column 'Band Order'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 3ae03606-9eae-576b-b26a-5a0e48d1373f
+		summarizeBy: none
+		sourceColumn: Band Order
+
+	partition Dim_DiscountBand = m
+		source =
+				let
+				    Source = Table.Distinct(Table.SelectColumns(SourceData, {"Discount Band"})),
+				    WithOrder = Table.AddColumn(Source, "Band Order", each if [Discount Band] = "None" then 1 else if [Discount Band] = "Low" then 2 else if [Discount Band] = "Medium" then 3 else if [Discount Band] = "High" then 4 else 99, Int64.Type),
+				    Sorted = Table.Sort(WithOrder, {{"Band Order", Order.Ascending}})
+				in
+				    Sorted
+
