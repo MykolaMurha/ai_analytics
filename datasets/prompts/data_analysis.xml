@@ -1,0 +1,13 @@
+<request>
+	<target>Extract the most important insight info for future PowerBI dashboard</target>
+	<description>It is necessary make brief analysis of input file within 5 mins and extract info to output for creation of PowerBI dashboard in the next prompt will be provided separately</description>
+	<persona>Senior Data Analyst</persona>
+	<input>datasets\Financial Sample.csv</input>
+	<output>datasets\fin_sample_analysis_result.md</output>
+	<rules>
+		<rule>You have not more than 5 mins for analysis</rule>
+		<rule>You need to make concise output, preferably making indexes and their explanation</rule>
+		<rule>output will be used by the next prompt to make PowerBI dashboard</rule>
+	</rules>
+	<action>Reach the target, taking into account rules</action>
+</request>
